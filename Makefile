@@ -9,7 +9,7 @@ libxeus.dll: $(OBJ_FILES)
 	$(CXX) $(ALL_LIBS) -shared -o $@ $^
 
 %.o: %.cpp
-	$(CXX) $(ALL_CPPFLAGS) -I./include -c $< -o $@
+	$(CXX) $(ALL_CPPFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
