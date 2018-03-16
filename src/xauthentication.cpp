@@ -135,8 +135,8 @@ namespace xeus {
       const zmq::message_t& content) const {
         std::string data = read_msg_parts(header, parent_header, meta_data, content);
         std::string hmac2dig = hmac<SHA256>(data, m_key);
-        std::string hmac = read_str(signature);
-        return hmac2dig==hmac;
+        std::string hmac_hex = read_str(signature);
+        return hmac2dig==hmac_hex;
     }
 
     zmq::message_t no_xauthentication::sign_impl(
