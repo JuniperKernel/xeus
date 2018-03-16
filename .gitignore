@@ -47,3 +47,8 @@ docs/build/
 
 # Jupyter artefacts
 .ipynb_checkpoints/
+
+
+# idea things
+*iml
+.idea/
