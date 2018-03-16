@@ -27,3 +27,4 @@ libxeus.so: $(OBJ_FILES)
 clean:
 	rm -rf build
 	rm -rf src/*o
+	rm -rf *so
