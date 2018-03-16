@@ -5,7 +5,7 @@ OBJ_FILES = $(patsubst $(SRC)/%.cpp,$(SRC)/%.o,$(CPP_FILES))
 default: libxeus.so
 
 libxeus.so: $(OBJ_FILES)
-	$(CXX) $(ALL_LIBS) -o $@ $^
+	$(CXX) $(ALL_LIBS) -shared -o $@ $^
 
 %.o: %.cpp
 	$(CXX) $(ALL_CPPFLAGS) -I./include -c $< -o $@
