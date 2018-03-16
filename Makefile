@@ -2,9 +2,10 @@ SRC = src
 CPP_FILES = $(wildcard $(SRC)/*cpp)
 OBJ_FILES = $(patsubst $(SRC)/%.cpp,$(SRC)/%.o,$(CPP_FILES))
 
-default: libxeus.so
-
 libxeus.so: $(OBJ_FILES)
+	$(CXX) $(ALL_LIBS) -shared -o $@ $^
+
+libxeus.dll: $(OBJ_FILES)
 	$(CXX) $(ALL_LIBS) -shared -o $@ $^
 
 %.o: %.cpp
