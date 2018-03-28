@@ -1,0 +1,19 @@
+R_SCMD = ${R_HOME}/bin${R_ARCH_BIN}/Rscript -e
+
+CPP_FILES = $(shell ${R_SCMD} "cat(file.path('src', list.files('src', pattern='*cpp$')))")
+OBJ_FILES = $(shell ${R_SCMD} "cat(gsub('cpp', 'o', file.path('src', list.files('src', pattern='*cpp$'))))"
+
+libxeus.so: $(OBJ_FILES)
+	$(CXX) $(ALL_LIBS) -shared -o $@ $^
+
+libxeus.dll: $(OBJ_FILES)
+	$(CXX) $(ALL_LIBS) -shared -o $@ $^
+
+%.o: %.cpp
+	$(CXX) $(ALL_CPPFLAGS) -c $< -o $@
+
+.PHONY: clean
+clean:
+	rm -rf build
+	rm -rf src/*o
+	rm -rf *so
