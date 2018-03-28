@@ -1,6 +1,5 @@
-SRC = src
-CPP_FILES = $(wildcard $(SRC)/*cpp)
-OBJ_FILES = $(patsubst $(SRC)/%.cpp,$(SRC)/%.o,$(CPP_FILES))
+CPP_FILES = @XEUS_CPP_FILES@
+OBJ_FILES = @XEUS_OBJ_FILES@
 
 libxeus.so: $(OBJ_FILES)
 	$(CXX) $(ALL_LIBS) -shared -o $@ $^
