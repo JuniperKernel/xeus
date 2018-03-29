@@ -27,9 +27,10 @@ namespace xeus
         m_controller.setsockopt(ZMQ_SUBSCRIBE, "", 0);
     }
 
-    void register_xserver(server_impl* xs) { m_xs = xs; }
+    void xcntrl::register_xserver(xserver* xs) { m_xs = xs; }
+    void xcntrl::send_message(zmq::multipart_t& msg) { msg.send(m_cntrl); }
 
-    void xheartbeat::run()
+    void xcntrl::run()
     {
         zmq::pollitem_t items[] = {
             { m_cntrl, 0, ZMQ_POLLIN, 0 },

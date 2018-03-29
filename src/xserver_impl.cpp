@@ -30,7 +30,7 @@ namespace xeus
           m_controller_pub(context, zmq::socket_type::pub),
           m_publisher(context, c.m_transport, c.m_ip, c.m_iopub_port),
           m_heartbeat(context, c.m_transport, c.m_ip, c.m_hb_port),
-          m_controller(context, c.m_transport, c.m_ip, c.m_hb_port),
+          m_controller(context, c.m_transport, c.m_ip, c.m_control_port),
           m_request_stop(false)
     {
         m_controller.register_xserver(this);
@@ -47,7 +47,7 @@ namespace xeus
 
     void xserver_impl::send_control_impl(zmq::multipart_t& message)
     {
-        message.send(m_controller);
+      m_controller.send_message(message);
     }
 
     void xserver_impl::send_stdin_impl(zmq::multipart_t& message)

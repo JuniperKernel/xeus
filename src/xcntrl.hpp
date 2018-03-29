@@ -10,12 +10,13 @@
 #define XCNTRL_HPP
 
 #include "zmq.hpp"
-#include "xserver_impl.hpp"
+#include "zmq_addon.hpp"
+#include "xeus/xserver.hpp"
 
 namespace xeus
 {
 
-    class xheartbeat
+    class xcntrl
     {
 
     public:
@@ -26,11 +27,13 @@ namespace xeus
                    const std::string& port);
 
         void run();
+        void register_xserver(xserver* xs);
+        void send_message(zmq::multipart_t& message);
 
     private:
-        xserver_impl* m_xs;
         zmq::socket_t m_cntrl;
         zmq::socket_t m_controller;
+        xserver* m_xs;
     };
 
 }

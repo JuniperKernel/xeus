@@ -77,7 +77,7 @@ namespace xeus
         {
         }
 
-        inline void interrupt_request_impl()
+        inline void interrupt_request_impl() override
         {
         }
 
