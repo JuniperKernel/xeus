@@ -13,6 +13,7 @@
 #include "xeus/xkernel_configuration.hpp"
 #include "xpublisher.hpp"
 #include "xheartbeat.hpp"
+#include "xcntrl.hpp"
 
 namespace xeus
 {
@@ -41,13 +42,13 @@ namespace xeus
         void stop_channels();
 
         zmq::socket_t m_shell;
-        zmq::socket_t m_controller;
         zmq::socket_t m_stdin;
         zmq::socket_t m_publisher_pub;
         zmq::socket_t m_controller_pub;
 
         xpublisher m_publisher;
         xheartbeat m_heartbeat;
+        xcntrl m_controller;
 
         bool m_request_stop;
     };
