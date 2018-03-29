@@ -196,7 +196,7 @@ namespace xeus
 
     std::string get_protocol_version()
     {
-        return "5.1";
+        return "5.3";
     }
 
     xjson make_header(const std::string& msg_type,
