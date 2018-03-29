@@ -46,13 +46,13 @@ namespace xeus
         void register_shell_listener(const listener& l);
         void register_control_listener(const listener& l);
         void register_stdin_listener(const listener& l);
+        void notify_control_listener(zmq::multipart_t& message);
 
     protected:
 
         xserver() = default;
 
         void notify_shell_listener(zmq::multipart_t& message);
-        void notify_control_listener(zmq::multipart_t& message);
         void notify_stdin_listener(zmq::multipart_t& message);
 
     private:

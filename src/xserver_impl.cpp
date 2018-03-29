@@ -25,16 +25,16 @@ namespace xeus
     xserver_impl::xserver_impl(zmq::context_t& context,
                                const xconfiguration& c)
         : m_shell(context, zmq::socket_type::router),
-          m_controller(context, zmq::socket_type::router),
           m_stdin(context, zmq::socket_type::router),
           m_publisher_pub(context, zmq::socket_type::pub),
           m_controller_pub(context, zmq::socket_type::pub),
           m_publisher(context, c.m_transport, c.m_ip, c.m_iopub_port),
           m_heartbeat(context, c.m_transport, c.m_ip, c.m_hb_port),
+          m_controller(context, c.m_transport, c.m_ip, c.m_hb_port),
           m_request_stop(false)
     {
+        m_controller.register_xserver(this);
         init_socket(m_shell, get_end_point(c.m_transport, c.m_ip, c.m_shell_port));
-        init_socket(m_controller, get_end_point(c.m_transport, c.m_ip, c.m_control_port));
         init_socket(m_stdin, get_end_point(c.m_transport, c.m_ip, c.m_stdin_port));
         init_socket(m_publisher_pub, get_publisher_end_point());
         init_socket(m_controller_pub, get_controller_end_point());
@@ -74,7 +74,6 @@ namespace xeus
         m_request_stop = false;
 
         zmq::pollitem_t items[] = {
-            { m_controller, 0, ZMQ_POLLIN, 0 },
             { m_shell, 0, ZMQ_POLLIN, 0 }
         };
 
@@ -82,16 +81,9 @@ namespace xeus
 
         while (!m_request_stop)
         {
-            zmq::poll(&items[0], 2, -1);
+            zmq::poll(&items[0], 1, -1);
 
-            if (items[0].revents & ZMQ_POLLIN)
-            {
-                zmq::multipart_t wire_msg;
-                wire_msg.recv(m_controller);
-                xserver::notify_control_listener(wire_msg);
-            }
-
-            if (!m_request_stop && (items[1].revents & ZMQ_POLLIN))
+            if (!m_request_stop && (items[0].revents & ZMQ_POLLIN))
             {
                 zmq::multipart_t wire_msg;
                 wire_msg.recv(m_shell);
