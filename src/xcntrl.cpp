@@ -43,6 +43,7 @@ namespace xeus
 
             if (items[0].revents & ZMQ_POLLIN)
             {
+                std::cout << "CONTROL MESSAGE" << std::endl;
                 zmq::multipart_t wire_msg;
                 wire_msg.recv(m_cntrl);
                 m_xs->notify_control_listener(wire_msg);

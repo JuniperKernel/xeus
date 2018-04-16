@@ -40,6 +40,7 @@ namespace xeus
         void stop_impl() override;
 
         void stop_channels();
+        void run();
 
         zmq::socket_t m_shell;
         zmq::socket_t m_stdin;

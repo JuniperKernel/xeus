@@ -69,34 +69,29 @@ namespace xeus
         iopub_thread.detach();
 
         std::thread hb_thread(&xheartbeat::run, &m_heartbeat);
-        hb_thread.detach();
-
         std::thread ctl_thread(&xcntrl::run, &m_controller);
-        ctl_thread.detach();
-
-        m_request_stop = false;
-
-        zmq::pollitem_t items[] = {
-            { m_shell, 0, ZMQ_POLLIN, 0 }
-        };
-
         publish(message);
+        std::thread sh_thread(&xserrver_impl::run, *this);
+        ctrl_thread.join();
+        sh_thread.join();
+    }
 
-        while (!m_request_stop)
-        {
-            zmq::poll(&items[0], 1, -1);
+    void xserver_impl::run() {
+      m_request_stop = false;
+      zmq::pollitem_t items[] = { { m_shell, 0, ZMQ_POLLIN, 0 } };
 
-            if (!m_request_stop && (items[0].revents & ZMQ_POLLIN))
-            {
-                zmq::multipart_t wire_msg;
-                wire_msg.recv(m_shell);
-                xserver::notify_shell_listener(wire_msg);
-            }
+      while (!m_request_stop) {
+        zmq::poll(&items[0], 1, -1);
+
+        if (!m_request_stop && (items[0].revents & ZMQ_POLLIN)) {
+          std::cout << "SHELL MESSAGE" << std::endl;
+          zmq::multipart_t wire_msg;
+          wire_msg.recv(m_shell);
+          xserver::notify_shell_listener(wire_msg);
         }
-
-        stop_channels();
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+      }
+      stop_channels();
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     void xserver_impl::abort_queue_impl(const listener& l, long polling_interval)
