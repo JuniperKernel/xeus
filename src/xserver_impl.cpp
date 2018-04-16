@@ -71,6 +71,9 @@ namespace xeus
         std::thread hb_thread(&xheartbeat::run, &m_heartbeat);
         hb_thread.detach();
 
+        std::thread ctl_thread(&xcntrl::run, &m_controller);
+        ctl_thread.detach();
+
         m_request_stop = false;
 
         zmq::pollitem_t items[] = {
