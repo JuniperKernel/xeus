@@ -9,6 +9,7 @@
 #include "xcntrl.hpp"
 #include "zmq_addon.hpp"
 #include "xmiddleware.hpp"
+#include <iostream>
 #include <iterator>
 
 namespace xeus
